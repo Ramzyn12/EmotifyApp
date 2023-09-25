@@ -7,10 +7,23 @@ module.exports = {
   ],
   theme: {
     extend: {
-      backgroundImage: {
-        'gradient-radial': 'radial-gradient(var(--tw-gradient-stops))',
-        'gradient-conic':
-          'conic-gradient(from 180deg at 50% 50%, var(--tw-gradient-stops))',
+      colors: {
+        'lighterPurple' :' #7e22ce',
+        'mainPurple': '#581C87',
+        'mainGreen' : '#4B871C'
+      },
+      fontFamily: {
+        'navLogo': ['ADLaM Display', 'sans-serif'],
+        'navLinks' : ['Lato', 'sans-serif'],
+        'homeTitle' : ['Archivo Black', 'sans-serif'],
+        'homeButtons' : ['Audiowide', 'cursive']
+      },
+      screens: {
+        'sm': '640px',
+        'md': '768px',
+        'lg': '1024px',
+        'xl': '1280px',
+        '2xl': '1536px',
       },
     },
   },

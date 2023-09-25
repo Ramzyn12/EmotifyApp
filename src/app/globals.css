@@ -1,27 +1,71 @@
+@import url('https://fonts.googleapis.com/css2?family=ADLaM+Display&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=Lato&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=Archivo+Black&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=Audiowide&display=swap');
+
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
 
-:root {
-  --foreground-rgb: 0, 0, 0;
-  --background-start-rgb: 214, 219, 220;
-  --background-end-rgb: 255, 255, 255;
+* {
+  box-sizing: border-box;
+  margin: 0;
+  padding: 0;
 }
 
-@media (prefers-color-scheme: dark) {
-  :root {
-    --foreground-rgb: 255, 255, 255;
-    --background-start-rgb: 0, 0, 0;
-    --background-end-rgb: 0, 0, 0;
+.fc-daygrid-day-top {
+  width: 100%;
+
+}
+
+.fc-daygrid-day-top a {
+  width: 100%;
+}
+
+.fc .fc-daygrid-day-frame {
+  overflow-y: scroll;
+  /* z-index: -2; */
+}
+
+.fc .fc-daygrid-day-frame:hover {
+  background-color: rgb(191 219 254);
+}
+
+.fc .fc-daygrid-day-number {
+  position: static;
+}
+
+.slide-enter {
+  opacity: 0;
+  transform: translateX(-100%);
+  transition: opacity 0.3s ease-in-out, transform 0.3s ease-in-out;
+}
+
+.slide-enter-active {
+  opacity: 1;
+  transform: translateX(0);
+}
+
+.text-gradient {
+  background: linear-gradient(to right, #D1D5DB, #1F2937);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+}
+
+.fc .fc-toolbar-title {
+  font-size: 16px;
+}
+
+@media (min-width: 640px) {
+  .fc .fc-toolbar-title {
+    font-size: 27px;
   }
 }
 
-body {
-  color: rgb(var(--foreground-rgb));
-  background: linear-gradient(
-      to bottom,
-      transparent,
-      rgb(var(--background-end-rgb))
-    )
-    rgb(var(--background-start-rgb));
+.active {
+  text-decoration: underline;
+}
+
+.fc-header-toolbar.fc-toolbar .fc-toolbar-chunk {
+  display: flex;
 }
