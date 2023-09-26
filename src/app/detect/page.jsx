@@ -4,15 +4,8 @@ import * as faceapi from "face-api.js";
 import Webcam from "react-webcam";
 import { useSession } from "next-auth/react";
 import { db } from "../firebase";
-import {
-  doc,
-  addDoc,
-  collection,
-  query,
-  where,
-  getDocs,
-  deleteDoc,
-} from "firebase/firestore";
+import Typewriter from "typewriter-effect";
+import { doc, addDoc, collection } from "firebase/firestore";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faStar } from "@fortawesome/free-regular-svg-icons";
 import {
@@ -46,6 +39,7 @@ const Page = () => {
   const [emotionError, setEmotionError] = useState(null);
   const [fetchError, setFetchError] = useState(null);
   const [note, setNote] = useState("");
+  const [notesError, setNotesError] = useState("");
   const [showNotes, setShowNotes] = useState(false);
   const [showCustomisation, setShowCustomisation] = useState(false);
 
@@ -257,71 +251,75 @@ const Page = () => {
   };
 
   const getPlaylist = async () => {
-    setIsFetching(true);
+    if (!isWebcamReady) {
+      setFetchError("Webcam not ready yet");
+      return; // Return early to prevent further execution
+    }
+
+    flushSync(() => {
+      setIsFetching(true);
+    });
     setFetchError(null);
 
-    setTimeout(async () => {
-      const emotionResults = await detectEmotions();
+    const emotionResults = await detectEmotions();
 
-      if (!emotionResults) {
-        setIsFetching(false);
-        return;
-      }
+    if (!emotionResults) {
+      setIsFetching(false);
+      return;
+    }
 
-      if (!session || !session.accessToken) {
-        setIsFetching(false);
-        setFetchError("Please Login to use the recommended songs feature");
-        return;
-      }
+    if (!session || !session.accessToken) {
+      setIsFetching(false);
+      setFetchError("Please Login to use the recommended songs feature");
+      return;
+    }
 
-      const emotion = emotionResults[0][0];
+    const emotion = emotionResults[0][0];
 
-      // Step 2: Get User's Top Artists
-      let topArtistsData;
-      let seedString = "";
+    // Step 2: Get User's Top Artists
+    let topArtistsData;
+    let seedString = "";
 
-      // remove true
-      if (useTopTracks) {
-        try {
-          topArtistsData = await getTopArtists(session);
-          console.log(topArtistsData, "top data");
-        } catch (error) {
-          setFetchError(error.message);
-          setIsFetching(false);
-          return;
-        }
-
-        if (topArtistsData.items && topArtistsData.items.length > 0) {
-          const topArtistIds = topArtistsData.items.map((artist) => artist.id);
-          const numSlices = 4;
-          const startIndex =
-            topArtistIds.length <= numSlices
-              ? 0
-              : Math.floor(Math.random() * (topArtistIds.length - numSlices));
-          const randomSliceOfArtists = topArtistIds
-            .slice(startIndex, startIndex + numSlices)
-            .join(",");
-          seedString = `&seed_artists=${randomSliceOfArtists}`;
-        } else {
-          seedString = "&seed_genres=pop";
-        }
-      }
-
+    // remove true
+    if (useTopTracks) {
       try {
-        await fetchRecommendations(session, emotion, seedString);
+        topArtistsData = await getTopArtists(session);
+        // console.log(topArtistsData, "top data");
       } catch (error) {
         setFetchError(error.message);
         setIsFetching(false);
         return;
       }
 
+      if (topArtistsData.items && topArtistsData.items.length > 0) {
+        const topArtistIds = topArtistsData.items.map((artist) => artist.id);
+        const numSlices = 4;
+        const startIndex =
+          topArtistIds.length <= numSlices
+            ? 0
+            : Math.floor(Math.random() * (topArtistIds.length - numSlices));
+        const randomSliceOfArtists = topArtistIds
+          .slice(startIndex, startIndex + numSlices)
+          .join(",");
+        seedString = `&seed_artists=${randomSliceOfArtists}`;
+      } else {
+        seedString = "&seed_genres=pop";
+      }
+    }
+
+    try {
+      await fetchRecommendations(session, emotion, seedString);
+    } catch (error) {
+      setFetchError(error.message);
       setIsFetching(false);
-    }, 0);
+      return;
+    }
+
+    setIsFetching(false);
   };
 
   const handleLikeClick = async (trackObject) => {
     if (!session) {
-      console.error("User is not authenticated.");
       return;
     }
 
@@ -352,8 +350,6 @@ const Page = () => {
       // Check if a document for this user already exists
       const userDocRef = doc(db, "users", session.user.email);
       await addDoc(collection(userDocRef, "likedTracks"), trackData);
-
-      console.log("Track liked and saved successfully!");
     } catch (error) {
       console.error("Error saving liked track:", error);
     }
@@ -361,7 +357,7 @@ const Page = () => {
 
   const handleSaveNote = async () => {
     if (!session) {
-      console.error("User is not authenticated.");
+      setNotesError("Please Login to save a note");
       return;
     }
 
@@ -460,34 +456,62 @@ const Page = () => {
       >
         Lets Tune Into Your Emotions!
       </h1>
-      <div className="flex w-full xl:flex-row flex-col items-center justify-around">
-        <p className="text-slate-400 flex items-center justify-center font-sans text-xl sm:text-2xl mt-8 text-center ">
-          <FontAwesomeIcon
-            className="border-2 rounded-lg border-slate-400 px-3 py-2"
-            icon={fa1}
-          />
-          <span className="ml-3">Position Your Face In The Centre</span>
-        </p>
-        <p className="text-slate-400 flex items-center justify-center font-sans text-xl sm:text-2xl mt-8 text-center ">
-          <FontAwesomeIcon
-            className="border-2 rounded-lg border-slate-400 px-3 py-2"
-            icon={fa2}
-          />
-          <span className="ml-3">Let Your Emotions Flood Out</span>
-        </p>
-        <p className="text-slate-400 flex items-center justify-center font-sans text-xl sm:text-2xl mt-8 text-center">
-          <FontAwesomeIcon
-            className="border-2 border-slate-400 rounded-lg px-3 py-2"
-            icon={fa3}
-          />
-          <span className="ml-3">Click &apos;Go&apos; When Ready</span>
-        </p>
+
+      <div className="w-full flex justify-center">
+        <div className="flex xl:w-full xl:flex-row my-10 flex-col  items-start justify-around">
+          <p className="text-slate-400 flex items-center justify-center font-sans text-xl sm:text-2xl mt-8 text-center ">
+            <FontAwesomeIcon
+              className="border-2 rounded-lg border-slate-400 px-3 py-2"
+              icon={fa1}
+            />
+            <span className="ml-3">Position Your Face In The Centre.</span>
+          </p>
+          <div className="text-slate-400 flex items-center justify-center font-sans text-xl sm:text-2xl mt-8 text-center ">
+            <FontAwesomeIcon
+              className="border-2 rounded-lg border-slate-400 px-3 py-2"
+              icon={fa2}
+            />
+            <span className="ml-3 flex gap-1 items-center justify-center">
+              Let Your Emotions Flood Out.
+              <Typewriter
+                options={{
+                  cursor: "",
+                  strings: [
+                    "Happy?",
+                    "Sad?",
+                    "Surprised?",
+                    "Angry?",
+                    "Neutral?",
+                  ],
+                  autoStart: true,
+                  pauseFor: 2000,
+                  loop: false,
+                }}
+              />
+            </span>
+          </div>
+          <p className="text-slate-400 flex items-center justify-center font-sans text-xl sm:text-2xl mt-8 text-center">
+            <FontAwesomeIcon
+              className="border-2 border-slate-400 rounded-lg px-3 py-2"
+              icon={fa3}
+            />
+            <span className="ml-3">Click &apos;Go&apos; When Ready.</span>
+          </p>
+        </div>
       </div>
       {/* save emotion? */}
 
       <div className="flex flex-col mx-auto w-full items-center justify-center">
         {/* Webcam Section */}
-        <div className="rounded-xl bg-slate-700 p-4 mt-10 flex flex-col  items-center justify-center w-full">
+        <div className="relative rounded-xl bg-slate-700 p-4 py-0 mt-10 flex flex-col  items-center justify-center w-full">
+          <div
+            className="absolute inset-0 bg-left bg-repeat bg-contain grayscale bg-slate-800 bg-opacity-10 z-0"
+            style={{
+              backgroundImage: "url(/playfulBackground.png)",
+              backgroundSize: "50%",
+            }}
+          ></div>
+
           {showNotes && (
             <NotesModal
               notesVariants={notesVariants}
@@ -496,25 +520,28 @@ const Page = () => {
               setNote={setNote}
               handleSaveNote={handleSaveNote}
               setShowNotes={setShowNotes}
+              notesError={notesError}
+              setNotesError={setNotesError}
             />
           )}
-          {!isWebcamReady && (
-            <div className=" flex text-2xl rounded-xl  text-white font-sans  items-center bg-slate-300 animate-pulse justify-center lg:w-1/3 w-full h-[300px]">
-              Loading webcam...
-            </div>
-          )}
+
           {/* webcam Main */}
-          <div className="sm:w-3/4 md:w-1/2  lg:w-[40%] xl:w-1/3 w-full">
+          <div className="sm:w-3/4 md:w-1/2 z-10 py-4 relative  bg-slate-700 h-full lg:w-[40%] xl:w-1/3 w-full">
+            {!isWebcamReady && (
+              <div className=" flex text-2xl z-10 relative rounded-xl  text-white font-sans  items-center bg-slate-300 animate-pulse justify-center w-full h-[300px]">
+                Loading webcam...
+              </div>
+            )}
             <Webcam
               className="rounded-xl w-full cursor-pointer"
               ref={webcamRef}
               style={{ display: isWebcamReady ? "block" : "none" }}
             />
             {/* controls */}
-            <div className="flex flex-col w-full mt-3 space-y-2">
+            <div className="flex flex-col z-10 relative w-full mt-3 space-y-2">
               <button
                 onClick={getPlaylist}
-                className="bg-green-700 rounded-lg py-2 text-white"
+                className="bg-green-700 hover:bg-green-800 duration-500 ease-in-out  rounded-lg py-2 text-white"
               >
                 Go
               </button>
@@ -524,7 +551,7 @@ const Page = () => {
                 animate="enter"
                 exit="exit"
                 onClick={() => setShowNotes(true)}
-                className="bg-slate-600 flex items-center gap-2 justify-center text-white rounded-lg py-2"
+                className="bg-slate-600 hover:bg-slate-800 duration-500 ease-in-out flex items-center gap-2 justify-center text-white rounded-lg py-2"
               >
                 <FontAwesomeIcon icon={faNotesMedical} />
                 Add Notes
@@ -534,7 +561,7 @@ const Page = () => {
                 initial="initial"
                 animate="enter"
                 onClick={() => setShowCustomisation(true)}
-                className="bg-slate-600 items-center flex gap-2 justify-center text-white space-x-1 rounded-lg py-2"
+                className="bg-slate-600 hover:bg-slate-800 duration-500 ease-in-out items-center flex gap-2 justify-center text-white space-x-1 rounded-lg py-2"
               >
                 <FontAwesomeIcon icon={faGear} />
                 Customise
@@ -582,7 +609,19 @@ const Page = () => {
             name="emotion-section"
             className="flex items-center justify-center mt-10 gap-6"
           >
-            <div className="w-[300px] h-[400px] bg-gray-300 rounded animate-pulse"></div>
+            <div className="w-[300px] lg:block hidden h-[400px] bg-gray-300 rounded animate-pulse"></div>
+
+            <div className="w-[300px] h-[400px] text-slate-500 text-2xl font-bold flex justify-center items-center bg-gray-300 rounded animate-pulse">
+              <Typewriter
+                options={{
+                  cursor: "",
+                  strings: ["Nearly", "Few seconds now...", "Ready?"],
+                  autoStart: true,
+                  pauseFor: 2000,
+                  loop: false,
+                }}
+              />
+            </div>
             <div className="w-[300px] lg:block hidden h-[400px] bg-gray-300 rounded animate-pulse"></div>
           </div>
         )}
@@ -657,14 +696,14 @@ const Page = () => {
           )}
 
         {fetchError && (
-          <div className="text-red-500 lg:w-1/2 w-full mx-auto mt-5 capitalize text-3xl text-center">
+          <div className="text-red-500 lg:w-1/2 w-full mx-auto mt-5 capitalize lg:text-3xl md:text-2xl text-xl text-center">
             {fetchError}
           </div>
         )}
         {fetchError === "Please Login to use the recommended songs feature" && (
-          <div className="lg:w-1/2 w-full tracking-wide mx-auto flex flex-col justify-center bg-slate-950 p-6 gap-2 rounded-2xl text-white font-navLinks text-xl mt-10 ">
+          <div className="w-full sm:w-2/3 md:w-1/2 mb-6 tracking-wide mx-auto flex flex-col justify-center bg-slate-950 p-6 gap-2 rounded-2xl text-white font-navLinks text-base sm:text-lg lg:text-xl mt-10 ">
             <p>Please use the following login to test the main features</p>
-            <p>ramzynanou03@gmail.com</p>
+            <p>tester123spotify@gmail.com</p>
             <p>Password: Tester123</p>
           </div>
         )}

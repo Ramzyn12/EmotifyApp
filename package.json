@@ -33,11 +33,13 @@
     "rc-slider": "^10.2.1",
     "react": "^18.2.0",
     "react-dom": "^18.2.0",
+    "react-loading-skeleton": "^3.3.1",
     "react-responsive-carousel": "^3.2.23",
     "react-scroll": "^1.8.9",
     "react-vertical-timeline-component": "^3.6.0",
     "react-webcam": "^7.1.1",
-    "tailwindcss": "3.3.3"
+    "tailwindcss": "3.3.3",
+    "typewriter-effect": "^2.21.0"
   },
   "devDependencies": {
     "encoding": "^0.1.13"

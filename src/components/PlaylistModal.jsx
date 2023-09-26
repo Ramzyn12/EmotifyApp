@@ -44,14 +44,13 @@ const PlaylistModal = (props) => {
       onClick={handleBackdropClick} // Add onClick handler here
     >
       {/* modal content container */}
-      <h1 className="text-2xl text-center mb-4">{formattedDate}</h1>
-      <div className="bg-green-600 p-5 rounded-lg lg:w-1/2 w-full sm:w-4/5 md:w-2/3 h-2/3 lg:h-3/4 flex flex-col">
-        <div className="flex flex-row h-full">
+      <div className="   lg:w-1/2 overflow-hidden w-full max-w-2xl  sm:w-4/5 md:w-2/3 sm:h-2/3 h-full lg:h-3/4 flex flex-col">
+        <div className="flex rounded-lg overflow-hidden xs:flex-row flex-col h-full">
           {/* side bar */}
-          <div className="sm:w-1/4 w-1/5  bg-slate-600 h-full flex flex-col">
+          <div className="sm:w-1/4 xs:w-1/5 w-full  bg-slate-600 xs:h-full flex xs:flex-col">
             <div
               onClick={() => setIsNotes(true)}
-              className={`p-2 h-1/2 cursor-pointer flex items-center hover:bg-slate-700 transition-all ease-in-out duration-500 justify-center border-b-2 border-b-gray-500 ${
+              className={`p-2 w-1/2 xs:h-1/2 xs:w-full cursor-pointer flex items-center hover:bg-slate-700 transition-all ease-in-out duration-500 justify-center border-b-2 border-b-gray-500 ${
                 isNotes ? "bg-slate-700" : ""
               }`}
             >
@@ -59,7 +58,7 @@ const PlaylistModal = (props) => {
             </div>
             <div
               onClick={() => setIsNotes(false)}
-              className={`p-2 h-1/2 cursor-pointer hover:bg-slate-700 transition-all ease-in-out duration-500 flex items-center justify-center ${
+              className={`p-2 w-1/2 xs:h-1/2 xs:w-full cursor-pointer hover:bg-slate-700 transition-all ease-in-out duration-500 flex items-center justify-center ${
                 !isNotes ? "bg-slate-700" : ""
               }`}
             >
@@ -67,7 +66,15 @@ const PlaylistModal = (props) => {
             </div>
           </div>
           {/* main content */}
-          <div className="w-4/5 lg:w-3/4 bg-slate-800 p-4 overflow-y-scroll h-full">
+          <div className="xs:w-4/5 w-full lg:w-3/4 xs:relative bg-slate-800 p-6 overflow-y-scroll h-full">
+            <button
+              className="text-white flex items-center justify-center absolute top-2 right-2 "
+              onClick={() => props.closeModal()}
+            >
+              <FontAwesomeIcon icon={faClose} className="text-2xl" />
+            </button>
+            <h1 className="text-2xl text-center mb-4">{formattedDate}</h1>
+
             {isNotes ? (
               <Notes
                 emotionsMap={props.emotionsMap}
@@ -82,12 +89,6 @@ const PlaylistModal = (props) => {
           </div>
         </div>
       </div>
-      <button
-        className="text-white flex items-center justify-center absolute top-5 right-5 bg-red-600 w-10 h-10 rounded-full hover:bg-red-700"
-        onClick={() => props.closeModal()}
-      >
-        <FontAwesomeIcon icon={faClose} className="text-2xl" />
-      </button>
     </div>
   );
 };

@@ -69,3 +69,14 @@
 .fc-header-toolbar.fc-toolbar .fc-toolbar-chunk {
   display: flex;
 }
+
+.Typewriter {
+  display: flex;
+  justify-content: center;
+  padding: 0;
+  margin: 0;
+}
+
+.tester {
+  max-lines: 2;
+}

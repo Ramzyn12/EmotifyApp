@@ -38,7 +38,7 @@ export default function Home() {
   return (
     <>
       <main className="w-full p-10 bg-slate-900">
-        {isArrow && (
+        {/* {isArrow && (
           <FontAwesomeIcon
             icon={faArrowDown}
             onClick={() =>
@@ -49,7 +49,7 @@ export default function Home() {
             }
             className="cursor-pointer absolute bottom-2 text-2xl text-white animate-bounce right-5 left-1/2"
           />
-        )}
+        )} */}
         {/* main container */}
         <div className="flex lg:flex-row flex-col w-full">
           {/* left side */}
@@ -73,23 +73,29 @@ export default function Home() {
             </p>
             {/* controls */}
             <div className="flex sm:flex-row flex-col lg:max-xl:flex-col w-full mt-10 gap-3">
-              <Link href={"/detect"} className="sm:w-1/2 lg:max-xl:w-full xl:w-auto">
+              <Link
+                href={"/detect"}
+                className="sm:w-1/2 lg:max-xl:w-2/3 xl:w-auto"
+              >
                 <button className="text-slate-300 tracking-wider w-full justify-center bg-green-700 font-homeButtons uppercase text-xl px-5 py-3 flex items-center gap-2 hover:bg-green-800 hover:rounded-lg transition-all duration-300">
                   Find Songs
                   <FontAwesomeIcon icon={faLocationArrow} className="text-xl" />
                 </button>
               </Link>
-              <Link href={"/moodTracker"} className="sm:w-1/2 lg:max-xl:w-full xl:w-auto">
+              <Link
+                href={"/moodTracker"}
+                className="sm:w-1/2 lg:max-xl:w-full xl:w-auto"
+              >
                 <button className=" bg-slate-600 tracking-wider font-homeButtons w-full justify-center uppercase text-xl px-5 py-3 text-slate-300 hover:bg-slate-700 hover:rounded-lg flex transition-all duration-300 items-center gap-2">
                   Track Moods
                   <FontAwesomeIcon icon={faLocationArrow} className="text-xl" />
                 </button>
               </Link>
             </div>
-            {/* right side */}
           </div>
-          <div className="lg:flex w-1/2 hidden justify-center relative">
-            <div className="w-96 h-96 rounded-full bg-green-700  border-8 border-slate-600 absolute top-30 left-0 z-0"></div>
+          {/* right side */}
+          <div className="lg:flex w-1/2 hidden justify-end relative">
+            <div className="w-96 h-96 rounded-full bg-gradient-to-t from-green-600 to-green-700 border-8 border-slate-600 absolute top-30 right-1/3 z-0"></div>
             <img
               className="z-10 lg:self-end object-contain"
               src="/headphoneMan.png"

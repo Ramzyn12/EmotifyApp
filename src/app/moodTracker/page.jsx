@@ -38,6 +38,7 @@ const findMostFrequentEmotion = (emotionsForTheDay) => {
 
   return mostFrequentEmotion;
 };
+
 // /MAYBE CALL TRACKER PAGE
 const Page = () => {
   const { data: session, status } = useSession();
@@ -178,27 +179,14 @@ const Page = () => {
               Open any calender day to see your notes and liked tracks for the
               day!
             </p>
-            {/* <div className="flex items-center mb-10 text-center justify-center">
-              <div className="lg:w-2/3 xl:w-1/2 md:w-3/4 w-full bg-slate-950 p-6 mt-10 rounded-xl">
-                <h1 className="lg:text-3xl text-xl text-center uppercase text-white font-homeTitle">
-                  Why?
-                </h1>
-                <p className="w-full tracking-wide mt-2 text-slate-400 text-lg  lg:text-2xl font-navLinks">
-                  Following your moods and thoughts throughout your life can
-                  help establish a correlation to how certain behaviours can
-                  affect your mood. Open any calender day to see your notes and
-                  liked tracks for the day!
-                </p>
-              </div>
-            </div> */}
           </>
         }
         {!session && (
-          <div className="w-1/2 tracking-wide mx-auto flex flex-col justify-center bg-slate-950 p-6 gap-2 rounded-2xl text-white font-navLinks text-xl mt-10 ">
+          <div className="w-full sm:w-2/3 md:w-1/2 mb-6 tracking-wide mx-auto flex flex-col justify-center bg-slate-950 p-6 gap-2 rounded-2xl text-white font-navLinks text-base sm:text-lg lg:text-xl mt-10 ">
             <p>
               Please use the following login to experience the full features of the mood tracker
             </p>
-            <p>ramzynanou03@gmail.com</p>
+            <p>tester123spotify@gmail.com</p>
             <p>Password: Tester123</p>
           </div>
         )}

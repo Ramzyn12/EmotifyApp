@@ -33,8 +33,8 @@ const Navbar = () => {
 
   return (
     <section className="bg-slate-900">
-      <div className="container px-4 py-8 text-white mx-auto flex items-end justify-between">
-        <Link href={'/'}>
+      <div className="px-10 py-8 text-white mx-auto flex items-end justify-between">
+        <Link href={"/"}>
           <h1 className="text-4xl font-navLogo">Emotify</h1>
         </Link>
 
@@ -56,6 +56,35 @@ const Navbar = () => {
             );
           })}
         </ul>
+        <div className="flex gap-4">
+          {!session ? (
+            <button
+              onClick={(e) => {
+                e.preventDefault();
+                signIn("spotify");
+              }}
+              className="p-1 px-3 rounded-lg border-none sm:block hidden bg-green-700 text-lg font-navLinks hover:bg-green-800 transition-all duration-500 border-2 border-slate-800"
+            >
+              Login
+            </button>
+          ) : (
+            <div className="font-navLinks flex items-center gap-4">
+              <p className="text-lg hidden lg:block">{session.user.email}</p>
+              <button
+                onClick={() => signOut()}
+                className="p-1 font-navLinks sm:block hidden border-none px-3 text-lg rounded-lg bg-green-700 hover:bg-green-800 transition-all duration-500 "
+              >
+                Logout
+              </button>
+            </div>
+          )}
+          <button
+            className="lg:hidden px-2 py-1"
+            onClick={() => setIsOpen(true)}
+          >
+            <FontAwesomeIcon icon={faBars} className="text-2xl" />
+          </button>
+        </div>
         <AnimatePresence>
           {isOpen && (
             <motion.div
@@ -90,41 +119,31 @@ const Navbar = () => {
                   );
                 })}
                 {session && (
-                  <p className="text-lg mt-10">{session.user.email}</p>
+                  <>
+                    <p className="text-lg mt-10">{session.user.email}</p>
+                    <button
+                      onClick={() => signOut()}
+                      className="p-1 font-navLinks block sm:hidden border-none px-3 text-lg rounded-lg bg-green-700 hover:bg-green-800 transition-all duration-500 "
+                    >
+                      Logout
+                    </button>
+                  </>
+                )}
+                {!session && (
+                  <button
+                    onClick={(e) => {
+                      e.preventDefault();
+                      signIn("spotify");
+                    }}
+                    className="p-1 px-3 rounded-lg border-none  bg-green-700 text-lg font-navLinks hover:bg-green-800 transition-all duration-500 border-2 border-slate-800"
+                  >
+                    Login
+                  </button>
                 )}
               </ul>
             </motion.div>
           )}
         </AnimatePresence>
-        <div className="flex gap-4">
-          {!session ? (
-            <button
-              onClick={(e) => {
-                e.preventDefault();
-                signIn("spotify");
-              }}
-              className="p-1 px-3 rounded-lg border-none bg-green-700 text-lg font-navLinks hover:bg-green-700 transition-all duration-500 border-2 border-slate-800"
-            >
-              Login
-            </button>
-          ) : (
-            <div className="font-navLinks flex items-center gap-4">
-              <p className="text-lg hidden lg:block">{session.user.email}</p>
-              <button
-                onClick={() => signOut()}
-                className="p-1 font-navLinks border-none px-3 text-lg rounded-lg bg-green-700 hover:bg-green-700 transition-all duration-500 "
-              >
-                Logout
-              </button>
-            </div>
-          )}
-          <button
-            className="lg:hidden px-2 py-1"
-            onClick={() => setIsOpen(true)}
-          >
-            <FontAwesomeIcon icon={faBars} className="text-2xl" />
-          </button>
-        </div>
       </div>
     </section>
   );

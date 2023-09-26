@@ -30,10 +30,10 @@ const Instructions = () => {
               background: "rgb(203 213 225)",
               color: "rgb(15 23 42)",
             }}
-            contentArrowStyle={{ borderRight: "7px solid £232631" }}
+            contentArrowStyle={{ borderRight: "7px solid rgb(203 213 225)" }}
           >
-            <h3 className="font-navLinks text-3xl font-bold ">Step One</h3>
-            <p className="tracking-wider">
+            <h3 className="font-navLinks text-2xl font-bold ">Step One</h3>
+            <p className="">
               Visit the detect page and follow the instructions to detect your
               very first emotion! You can even add extra customization to get
               the perfect recommendation
@@ -49,10 +49,10 @@ const Instructions = () => {
               background: "rgb(203 213 225)",
               color: "rgb(15 23 42)",
             }}
-            contentArrowStyle={{ borderRight: "7px solid £232631" }}
+            contentArrowStyle={{ borderRight: "7px solid rgb(203 213 225)" }}
           >
-            <h3 className="font-navLinks text-3xl font-bold ">Step Two</h3>
-            <p className="tracking-wider">
+            <h3 className="font-navLinks text-2xl font-bold ">Step Two</h3>
+            <p className="">
               Add a note about your thoughts and feelings to keep a
               journal of your mood throughout. You can even like tracks to save
               them to your journal if you ever want to revisit them
@@ -68,12 +68,12 @@ const Instructions = () => {
               background: "rgb(203 213 225)",
               color: "rgb(15 23 42)",
             }}
-            contentArrowStyle={{ borderRight: "7px solid £232631" }}
+            contentArrowStyle={{ borderRight: "7px solid rgb(203 213 225)" }}
           >
-            <h3 className="font-navLinks text-3xl font-bold ">Step Three</h3>
-            <p className="tracking-wider">
+            <h3 className="font-navLinks text-2xl font-bold ">Step Three</h3>
+            <p className="text-2xl">
               Visit the journal page to get a calender overview of all your
-              emotions. Click on an date the get a rundown of your mood, notes
+              emotions. Click on a date to get a rundown of your mood, notes
               and liked songs that day!
             </p>
           </VerticalTimelineElement>
