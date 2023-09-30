@@ -37,7 +37,7 @@ export default function Home() {
 
   return (
     <>
-      <main className="w-full p-10 bg-slate-900">
+      <main className="w-full xs:p-10 px-4 py-8 bg-slate-900">
         {/* {isArrow && (
           <FontAwesomeIcon
             icon={faArrowDown}

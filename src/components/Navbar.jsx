@@ -33,7 +33,7 @@ const Navbar = () => {
 
   return (
     <section className="bg-slate-900">
-      <div className="px-10 py-8 text-white mx-auto flex items-end justify-between">
+      <div className="xs:px-10 px-4 py-8 text-white mx-auto flex items-end justify-between">
         <Link href={"/"}>
           <h1 className="text-4xl font-navLogo">Emotify</h1>
         </Link>
@@ -100,7 +100,7 @@ const Navbar = () => {
               >
                 <FontAwesomeIcon className="text-2xl" icon={faTimes} />
               </button>
-              <ul className="flex flex-col items-center justify-center h-screen space-y-4">
+              <ul className="flex flex-col text-xl items-center justify-center h-screen space-y-4">
                 {navLinks.map((link) => {
                   const isActive = pathname === link.href;
                   return (

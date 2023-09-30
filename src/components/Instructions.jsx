@@ -9,7 +9,7 @@ import "react-vertical-timeline-component/style.min.css";
 
 const Instructions = () => {
   return (
-    <div className="bg-slate-900 px-10 lg:py-32 py-10">
+    <div className="bg-slate-900 xs:px-10 px-4 lg:py-32 py-10">
       <motion.div className="text-center">
         <p className="text-slate-400 tracking-wider uppercase text-2xl font-homeTitle">
           How to make the most of emotify

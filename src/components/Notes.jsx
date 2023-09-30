@@ -19,7 +19,6 @@ const Notes = (props) => {
     <>
       {sortedNotes.length === 0 && (
         <div className="h-full flex items-center justify-center">
-          {" "}
           <p className="text-center font-navLinks text-lg">
             {session ? 'Add some notes to get started!' : 'Login to add some notes!'}
           </p>

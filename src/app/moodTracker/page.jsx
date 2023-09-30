@@ -169,7 +169,7 @@ const Page = () => {
 
   return (
     <>
-      <div className="min-h-screen text-white w-full p-10 bg-slate-900">
+      <div className="min-h-screen text-white w-full xs:p-10 px-4 py-10 bg-slate-900">
         {
           <>
             <h1 className="w-full text-center text-slate-200 font-homeTitle text-2xl md:text-3xl lg:text-4xl uppercase lg:mt-10">

@@ -449,7 +449,7 @@ const Page = () => {
   };
 
   return (
-    <div className="min-h-screen pb-9 w-full px-3 bg-slate-900">
+    <div className="min-h-screen pb-9 w-full px-4 bg-slate-900">
       {/* change font */}
       <h1
         className={`text-2xl lg:text-4xl uppercase font-homeTitle text-center text-white pt-10`}
@@ -459,19 +459,19 @@ const Page = () => {
 
       <div className="w-full flex justify-center">
         <div className="flex xl:w-full xl:flex-row my-10 flex-col  items-start justify-around">
-          <p className="text-slate-400 flex items-center justify-center font-sans text-xl sm:text-2xl mt-8 text-center ">
+          <p className="text-slate-400 flex xs:items-center items-start justify-center font-sans text-xl sm:text-2xl mt-8 text-center ">
             <FontAwesomeIcon
               className="border-2 rounded-lg border-slate-400 px-3 py-2"
               icon={fa1}
             />
             <span className="ml-3">Position Your Face In The Centre.</span>
           </p>
-          <div className="text-slate-400 flex items-center justify-center font-sans text-xl sm:text-2xl mt-8 text-center ">
+          <div className="text-slate-400 flex xs:items-center items-start justify-center font-sans text-xl sm:text-2xl mt-8 text-center ">
             <FontAwesomeIcon
               className="border-2 rounded-lg border-slate-400 px-3 py-2"
               icon={fa2}
             />
-            <span className="ml-3 flex gap-1 items-center justify-center">
+            <span className="ml-3 flex  gap-1 items-center justify-center">
               Let Your Emotions Flood Out.
               <Typewriter
                 options={{
@@ -490,7 +490,7 @@ const Page = () => {
               />
             </span>
           </div>
-          <p className="text-slate-400 flex items-center justify-center font-sans text-xl sm:text-2xl mt-8 text-center">
+          <p className="text-slate-400 flex xs:items-center items-start justify-center font-sans text-xl sm:text-2xl mt-8 text-center">
             <FontAwesomeIcon
               className="border-2 border-slate-400 rounded-lg px-3 py-2"
               icon={fa3}
@@ -541,7 +541,7 @@ const Page = () => {
             <div className="flex flex-col z-10 relative w-full mt-3 space-y-2">
               <button
                 onClick={getPlaylist}
-                className="bg-green-700 hover:bg-green-800 duration-500 ease-in-out  rounded-lg py-2 text-white"
+                className="bg-green-700 hover:bg-green-600 duration-500 ease-in-out  rounded-lg py-2 text-white"
               >
                 Go
               </button>
@@ -551,7 +551,7 @@ const Page = () => {
                 animate="enter"
                 exit="exit"
                 onClick={() => setShowNotes(true)}
-                className="bg-slate-600 hover:bg-slate-800 duration-500 ease-in-out flex items-center gap-2 justify-center text-white rounded-lg py-2"
+                className="bg-slate-600 hover:bg-slate-500 duration-500 ease-in-out flex items-center gap-2 justify-center text-white rounded-lg py-2"
               >
                 <FontAwesomeIcon icon={faNotesMedical} />
                 Add Notes
@@ -561,7 +561,7 @@ const Page = () => {
                 initial="initial"
                 animate="enter"
                 onClick={() => setShowCustomisation(true)}
-                className="bg-slate-600 hover:bg-slate-800 duration-500 ease-in-out items-center flex gap-2 justify-center text-white space-x-1 rounded-lg py-2"
+                className="bg-slate-600 hover:bg-slate-500 duration-500 ease-in-out items-center flex gap-2 justify-center text-white space-x-1 rounded-lg py-2"
               >
                 <FontAwesomeIcon icon={faGear} />
                 Customise
@@ -615,7 +615,7 @@ const Page = () => {
               <Typewriter
                 options={{
                   cursor: "",
-                  strings: ["Nearly", "Few seconds now...", "Ready?"],
+                  strings: ["Nearly", "Few seconds now...", "Almost!"],
                   autoStart: true,
                   pauseFor: 2000,
                   loop: false,
