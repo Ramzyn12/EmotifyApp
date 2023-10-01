@@ -351,6 +351,7 @@ const Page = () => {
       const userDocRef = doc(db, "users", session.user.email);
       await addDoc(collection(userDocRef, "likedTracks"), trackData);
     } catch (error) {
+      //add real error handle 
       console.error("Error saving liked track:", error);
     }
   };
@@ -380,6 +381,7 @@ const Page = () => {
       await addDoc(collection(userDocRef, "notes"), noteData);
       console.log("Note saved successfully!");
     } catch (error) {
+      //add real error handling
       console.error("Error saving note:", error);
     }
     setNote("");
@@ -409,6 +411,7 @@ const Page = () => {
       await addDoc(collection(userDocRef, "emotions"), emotionData);
       console.log("Emotion saved successfully!");
     } catch (error) {
+      // add error handling real
       console.error("Error saving emotion:", error);
     }
   };

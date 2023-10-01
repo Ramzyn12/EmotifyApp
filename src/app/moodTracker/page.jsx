@@ -54,30 +54,27 @@ const Page = () => {
   const [selectedTracks, setSelectedTracks] = useState(null);
 
   useEffect(() => {
+    console.time("fetchData")
     const fetchData = async () => {
       if (session && session.user && session.user.email) {
         const userDocRef = doc(db, "users", session.user.email);
-
-        // Fetching tracks
-        const trackSnapshot = await getDocs(
-          collection(userDocRef, "likedTracks")
-        );
+    
+        const [trackSnapshot, emotionSnapshot, notesSnapshot] = await Promise.all([
+          getDocs(collection(userDocRef, "likedTracks")),
+          getDocs(collection(userDocRef, "emotions")),
+          getDocs(collection(userDocRef, "notes"))
+        ]);
+    
         const fetchedTracks = trackSnapshot.docs.map((doc) => doc.data());
-
-        // Fetching emotions
-        const emotionSnapshot = await getDocs(
-          collection(userDocRef, "emotions")
-        );
         const fetchedEmotions = emotionSnapshot.docs.map((doc) => doc.data());
-
-        const notesSnapshot = await getDocs(collection(userDocRef, "notes"));
         const fetchedNotes = notesSnapshot.docs.map((doc) => doc.data());
-
+    
         setTracks(fetchedTracks);
         setEmotions(fetchedEmotions);
         setNotes(fetchedNotes);
       }
     };
+    console.timeEnd("fetchData")
 
     if (status === "authenticated") {
       fetchData();
@@ -110,7 +107,7 @@ const Page = () => {
       (emotion) => emotion.date === adjustedDateStr
     );
 
-    console.log("Before sorting:", emotionsForTheDay);
+    // console.log("Before sorting:", emotionsForTheDay);
 
     emotionsForTheDay.sort((a, b) => {
       if (a.time && b.time) {
@@ -119,7 +116,7 @@ const Page = () => {
       return 0;
     });
 
-    console.log("After sorting:", emotionsForTheDay);
+    // console.log("After sorting:", emotionsForTheDay);
 
     const emotionsTimeMap = {};
 
