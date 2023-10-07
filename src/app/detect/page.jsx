@@ -53,11 +53,34 @@ const Page = () => {
 
   // This function will be called once the webcam is ready
 
+  const prepareFaceDetector = () => {
+    let base_image = new Image();
+    base_image.src = "/startFaceDetect.jpeg"; // Adjust the path accordingly
+    base_image.onload = async function () {
+      const detection = await faceapi
+        .detectSingleFace(base_image, new faceapi.TinyFaceDetectorOptions())
+        .withFaceExpressions();
+
+
+      console.log("--------> ", detection);
+    };
+  };
+
   useEffect(() => {
-    const loadModels = async () => {
-      await faceapi.nets.tinyFaceDetector.loadFromUri("/models");
-      await faceapi.nets.faceExpressionNet.loadFromUri("/models");
-      await faceapi.nets.faceLandmark68Net.loadFromUri("/models");
+    const loadModels = () => {
+      const promises = [
+        faceapi.nets.tinyFaceDetector.loadFromUri("/models"),
+        faceapi.nets.faceExpressionNet.loadFromUri("/models"),
+        faceapi.nets.faceLandmark68Net.loadFromUri("/models"),
+      ];
+
+      Promise.all(promises)
+        .then(() => {
+          prepareFaceDetector();
+        })
+        .catch((error) => {
+          console.error("Error loading models:", error);
+        });
     };
 
     loadModels();
@@ -261,7 +284,9 @@ const Page = () => {
     });
     setFetchError(null);
 
+    console.time("detectEmotions");
     const emotionResults = await detectEmotions();
+    console.timeEnd("detectEmotions");
 
     if (!emotionResults) {
       setIsFetching(false);
@@ -283,7 +308,10 @@ const Page = () => {
     // remove true
     if (useTopTracks) {
       try {
+        console.time("TopArtists");
         topArtistsData = await getTopArtists(session);
+        console.timeEnd("TopArtists");
+
         // console.log(topArtistsData, "top data");
       } catch (error) {
         setFetchError(error.message);
@@ -308,7 +336,9 @@ const Page = () => {
     }
 
     try {
+      console.time("fetchRecommend");
       await fetchRecommendations(session, emotion, seedString);
+      console.timeEnd("fetchRecommend");
     } catch (error) {
       setFetchError(error.message);
       setIsFetching(false);
@@ -351,7 +381,7 @@ const Page = () => {
       const userDocRef = doc(db, "users", session.user.email);
       await addDoc(collection(userDocRef, "likedTracks"), trackData);
     } catch (error) {
-      //add real error handle 
+      //add real error handle
       console.error("Error saving liked track:", error);
     }
   };
@@ -476,7 +506,7 @@ const Page = () => {
             />
             <span className="ml-3 flex  gap-1 items-center justify-center">
               Let Your Emotions Flood Out.
-              <Typewriter
+              {/* <Typewriter
                 options={{
                   cursor: "",
                   strings: [
@@ -490,7 +520,7 @@ const Page = () => {
                   pauseFor: 2000,
                   loop: false,
                 }}
-              />
+              /> */}
             </span>
           </div>
           <p className="text-slate-400 flex xs:items-center items-start justify-center font-sans text-xl sm:text-2xl mt-8 text-center">
